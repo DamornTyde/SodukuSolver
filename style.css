@@ -1,0 +1,68 @@
+* {
+    margin: 3px;
+}
+
+#menu {
+    margin: 0 6px;
+}
+
+td {
+    border-right: 1px black solid;
+    border-bottom: 1px black solid;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+}
+
+tr td:nth-of-type(3n) {
+    border-right: 2px black solid;
+}
+
+table tr:nth-of-type(3n) td {
+    border-bottom: 2px black solid;
+}
+
+tr td:last-of-type {
+    border-right: none;
+}
+
+table tr:last-of-type td {
+    border-bottom: none;
+}
+
+table {
+    border: 3px black solid;
+    border-spacing: 0;
+}
+
+#flex {
+    display: flex;
+}
+
+.gray {
+    color: gray;
+}
+
+#input table {
+    border-spacing: 1px;
+    border: 0;
+}
+
+#input td {
+    border: 0;
+}
+
+#input td:not(.gray) {
+    border: 1px gray solid;
+    border-radius: 3px;
+    background-color: lightgray;
+}
+
+#solved td:not(.gray) {
+    background-color: lightgray;
+    font-weight: 800;
+}
+
+.active {
+    background-color: lightgray;
+}
