@@ -98,12 +98,7 @@ buildInput();
 solve.addEventListener("click", () => {
     output.innerHTML = "";
     numpad.innerHTML = "";
-    const cells = [];
-    for (let x = 0; x < 9; x++) {
-        for (let y = 0; y < 9; y++) {
-            if (puzzle[x][y] === 0) { cells.push({ 'x': x, 'y': y }); }
-        }
-    }
+    const cells = puzzle.map((row, x) => row.map((cell, y) => cell === 0 ? { 'x': x, 'y': y } : [])).flat(2);
     if (cells.length !== 0) {
         let index = 0;
         while (index > -1 && index < cells.length) {
