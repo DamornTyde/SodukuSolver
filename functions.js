@@ -3,14 +3,7 @@ const input = document.querySelector("#puzzle");
 const numpad = document.querySelector("#input");
 const output = document.querySelector("#solved");
 const solve = document.querySelector("#solve");
-const puzzle = [];
-
-// build array
-for (let x = 0; x < 9; x++) {
-    const row = [];
-    for (let y = 0; y < 9; y++) { row.push(0); }
-    puzzle.push(row);
-}
+const puzzle = Array(9).fill().map(() => Array(9).fill(0));
 
 // templates
 function printPuzzle() {
