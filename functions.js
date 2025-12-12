@@ -54,11 +54,9 @@ function printNumpad(x, y) {
 function checkBlock(x, y, num) {
     const row = Math.floor(x / 3) * 3;
     const col = Math.floor(y / 3) * 3;
-    for (let x1 = row; x1 < row + 3; x1++) {
-        if (x1 !== x) {
-            for (let y1 = col; y1 < col + 3; y1++) {
-                if (puzzle[x1][y1] === num) return false;
-            }
+    for (let x1 = row; x1 < row + 3; x1++) if (x1 !== x) {
+        for (let y1 = col; y1 < col + 3; y1++) if (y1 !== y) {
+            if (puzzle[x1][y1] === num) return false;
         }
     }
     return true;
@@ -111,15 +109,13 @@ solve.addEventListener("click", () => {
                 puzzle[cell.x][cell.y] = 0;
                 output.querySelectorAll("tr")[cell.x].querySelectorAll("td")[cell.y].classList.add("gray");
             }
-        } else { alert("This sudoku can't be solved, though..."); }
-    } else { alert("There are no empty cells, Bite me!"); }
+        } else alert("This sudoku can't be solved, though...");
+    } else alert("There are no empty cells, Bite me!");
 });
 
 function prefilter(x, y) {
     const temp = [];
-    for (let num = 1; num < 10; num++) {
-        if (checkCell(x, y, num)) temp.push(num);
-    }
+    for (let num = 1; num < 10; num++) if (checkCell(x, y, num)) temp.push(num);
     return temp;
 }
 
