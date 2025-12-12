@@ -98,10 +98,11 @@ solve.addEventListener("click", () => {
             if (geuss === -1) {
                 puzzle[cell.x][cell.y] = 0;
                 index--;
-            } else if (checkCell(cell.x, cell.y, cell.z[geuss])) {
-                puzzle[cell.x][cell.y] = cell.z[geuss];
-                index++;
-            } else puzzle[cell.x][cell.y] = cell.z[geuss];
+            } else {
+                const num = cell.z[geuss]
+                if (checkCell(cell.x, cell.y, num)) index++;
+                puzzle[cell.x][cell.y] = num;
+            }
         }
         if (index === cells.length) {
             output.append(printPuzzle());
