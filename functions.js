@@ -12,8 +12,8 @@ function printPuzzle() {
         const tr = document.createElement("tr");
         for (const y of x) {
             const td = document.createElement("td");
-            if (y === 0) { td.append(document.createTextNode(" ")); } 
-            else { td.append(document.createTextNode(y)); }
+            if (y === 0) td.append(document.createTextNode(" ")); 
+            else td.append(document.createTextNode(y));
             tr.append(td);
         }
         table.append(tr);
@@ -29,8 +29,8 @@ function printNumpad(x, y) {
         for (let num = x1 * 3 + 1; num < x1 * 3 + 4; num++) {
             const cell = document.createElement("td");
             cell.append(document.createTextNode(num));
-            if (checkCell(x, y, num)) { cell.addEventListener("click", () => inputValue(x, y, num)); } 
-            else { cell.classList.add("gray"); }
+            if (checkCell(x, y, num)) cell.addEventListener("click", () => inputValue(x, y, num)); 
+            else cell.classList.add("gray");
             row.append(cell);
         }
         table.append(row);
@@ -39,8 +39,8 @@ function printNumpad(x, y) {
     const cell = document.createElement("td");
     cell.setAttribute("colspan", "3");
     cell.append(document.createTextNode(0));
-    if (puzzle[x][y] !== 0) { cell.addEventListener("click", () => inputValue(x, y, 0)); }
-    else { cell.classList.add("gray"); }
+    if (puzzle[x][y] !== 0) cell.addEventListener("click", () => inputValue(x, y, 0));
+    else cell.classList.add("gray");
     row.append(cell);
     table.append(row);
     numpad.append(table);
@@ -57,7 +57,7 @@ function checkBlock(x, y, num) {
     for (let x1 = row; x1 < row + 3; x1++) {
         if (x1 !== x) {
             for (let y1 = col; y1 < col + 3; y1++) {
-                if (puzzle[x1][y1] === num) { return false; }
+                if (puzzle[x1][y1] === num) return false;
             }
         }
     }
@@ -91,19 +91,19 @@ buildInput();
 solve.addEventListener("click", () => {
     output.innerHTML = "";
     numpad.innerHTML = "";
-    const cells = puzzle.map((row, x) => row.map((cell, y) => cell === 0 ? { 'x': x, 'y': y } : [])).flat(2);
+    const cells = puzzle.map((row, x) => row.map((cell, y) => cell === 0 ? { 'x': x, 'y': y, 'z': prefilter(x, y) } : [])).flat(2);
     if (cells.length !== 0) {
         let index = 0;
         while (index > -1 && index < cells.length) {
             const cell = cells[index];
-            const geuss = puzzle[cell.x][cell.y] + 1;
-            if (geuss > 9) {
+            const geuss = cell.z.findIndex(i => i > puzzle[cell.x][cell.y]);
+            if (geuss === -1) {
                 puzzle[cell.x][cell.y] = 0;
                 index--;
-            } else if (checkCell(cell.x, cell.y, geuss)) {
-                puzzle[cell.x][cell.y] = geuss;
+            } else if (checkCell(cell.x, cell.y, cell.z[geuss])) {
+                puzzle[cell.x][cell.y] = cell.z[geuss];
                 index++;
-            } else { puzzle[cell.x][cell.y] = geuss; }
+            } else puzzle[cell.x][cell.y] = cell.z[geuss];
         }
         if (index === cells.length) {
             output.append(printPuzzle());
@@ -115,10 +115,18 @@ solve.addEventListener("click", () => {
     } else { alert("There are no empty cells, Bite me!"); }
 });
 
+function prefilter(x, y) {
+    const temp = [];
+    for (let num = 1; num < 10; num++) {
+        if (checkCell(x, y, num)) temp.push(num);
+    }
+    return temp;
+}
+
 // keyboard
 document.addEventListener("keydown", event => {
     let num = Number(event.key);
-    if (event.key === "Enter") { solve.click(); }
+    if (event.key === "Enter") solve.click();
     else if (num !== NaN && numpad.querySelectorAll("table").length > 0) {
         num = num === 0 ? 9 : num - 1;
         numpad.querySelectorAll("td")[num].click();
